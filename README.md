@@ -1,6 +1,6 @@
 # CodeComet containers library
 
-A very simple library providing basic containers manipulation methods.
+A very simple library providing basics for the containers ecosystem.
 
 At this point, this is merely hiding away opencontainers/*.
 
