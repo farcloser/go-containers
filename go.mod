@@ -1,4 +1,4 @@
-module go.codecomet.dev/containers
+module go.farcloser.world/containers
 
 go 1.19
 
