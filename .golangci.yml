@@ -46,10 +46,4 @@ linters-settings:
           - $gostd
           - github.com/opencontainers/go-digest
           - github.com/opencontainers/image-spec
-        deny:
-          - pkg: "github.com/sirupsen/logrus"
-            desc: we use Zerolog
-          - pkg: "github.com/bugsnag/bugsnag-go"
-            desc: we use Sentry
-          - pkg: "github.com/pkg/errors"
-            desc: Should be replaced by standard lib errors package
+          - github.com/opencontainers/runtime-spec
