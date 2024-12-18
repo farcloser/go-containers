@@ -23,6 +23,7 @@ type (
 	Hooks   = runtime.Hooks
 
 	Linux             = runtime.Linux
+	Windows           = runtime.Windows
 	LinuxResources    = runtime.LinuxResources
 	LinuxBlockIO      = runtime.LinuxBlockIO
 	LinuxCPU          = runtime.LinuxCPU
