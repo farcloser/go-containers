@@ -17,6 +17,10 @@ type (
 )
 
 const (
-	MediaTypeImageManifest = v1.MediaTypeImageManifest
-	MediaTypeImageConfig   = v1.MediaTypeImageConfig
+	MediaTypeImageManifest  = v1.MediaTypeImageManifest
+	MediaTypeImageConfig    = v1.MediaTypeImageConfig
+	MediaTypeImageLayerZstd = v1.MediaTypeImageLayerZstd
+	MediaTypeImageLayerGzip = v1.MediaTypeImageLayerGzip
+	MediaTypeImageIndex     = v1.MediaTypeImageIndex
+	MediaTypeImageLayer     = v1.MediaTypeImageLayer
 )
