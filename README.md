@@ -10,8 +10,8 @@ At this point, this is merely hiding away `opencontainers/*`.
 
 ```bash
 make lint
-make lint-fix
-make tidy
+make test
+make fix
 ```
 
 ### Local documentation
