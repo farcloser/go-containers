@@ -15,3 +15,8 @@ type (
 	ImageLayout = v1.ImageLayout
 	RootFS      = v1.RootFS
 )
+
+const (
+	MediaTypeImageManifest = v1.MediaTypeImageManifest
+	MediaTypeImageConfig   = v1.MediaTypeImageConfig
+)
