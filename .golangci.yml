@@ -47,3 +47,4 @@ linters-settings:
           - github.com/opencontainers/go-digest
           - github.com/opencontainers/image-spec
           - github.com/opencontainers/runtime-spec
+          - github.com/containerd/cgroups
