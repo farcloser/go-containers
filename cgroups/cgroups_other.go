@@ -17,3 +17,7 @@ func DefaultMode() Mode {
 func AvailableManagers() []Manager {
 	return []Manager{}
 }
+
+func AvailableModes() []Mode {
+	return []Mode{}
+}

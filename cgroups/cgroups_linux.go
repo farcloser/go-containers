@@ -19,9 +19,11 @@ const (
 	cpuSetController Controller = "cpuset"
 	pidsController   Controller = "pids"
 
-	systemdPath            = "/run/systemd/system"
-	cgroupNSPath           = "/proc/self/ns/cgroup"
-	procSelfCGroupPath     = "/proc/self/cgroup"
+	cgroupRoot         = "/sys/fs/cgroup"
+	procSelfCGroupPath = "/proc/self/cgroup"
+	cgroupNSPath       = "/proc/self/ns/cgroup"
+	systemdPath        = "/run/systemd/system"
+
 	memorySwapMaxFile      = "memory.swap.max"
 	cpuSetCPUEffectiveFile = "cpuset.cpus.effective"
 	cpuSetMemEffectiveFile = "cpuset.mems.effective"
@@ -44,7 +46,7 @@ func DefaultManager() Manager {
 }
 
 func DefaultMode() Mode {
-	if Version() == Version2 {
+	if Version() == Version2 && isSystemdAvalailable() {
 		return PrivateNsMode
 	}
 
@@ -53,43 +55,20 @@ func DefaultMode() Mode {
 
 func AvailableManagers() []Manager {
 	candidates := []Manager{NoneManager}
-	if isSystemdAvalailable() {
+	if Version() == Version2 && isSystemdAvalailable() {
 		candidates = append(candidates, SystemdManager)
 	}
 
 	return candidates
 }
 
-func getSwapLimit() bool {
-	_, unified, err := cgroups.ParseCgroupFileUnified(procSelfCGroupPath)
-	if err != nil {
-		return false
+func AvailableModes() []Mode {
+	candidates := []Mode{HostNsMode}
+	if Version() == Version2 && isSystemdAvalailable() {
+		candidates = append(candidates, PrivateNsMode)
 	}
 
-	if unified == "" {
-		return false
-	}
-
-	cGroupPath := path.Join(CgroupRoot, unified, memorySwapMaxFile)
-	if _, err = os.Stat(cGroupPath); os.IsNotExist(err) {
-		return false
-	}
-
-	return true
-}
-
-func GetCPUMemInfo(groupPath string) (string, string) {
-	cpus, err := os.ReadFile(path.Join(CgroupRoot, groupPath, cpuSetCPUEffectiveFile))
-	if err != nil {
-		return "", ""
-	}
-
-	mems, err := os.ReadFile(path.Join(CgroupRoot, groupPath, cpuSetMemEffectiveFile))
-	if err != nil {
-		return "", ""
-	}
-
-	return strings.TrimSpace(string(cpus)), strings.TrimSpace(string(mems))
+	return candidates
 }
 
 func New(pth string) (*Info, []error, error) {
@@ -151,7 +130,7 @@ func New(pth string) (*Info, []error, error) {
 		warnings = append(warnings, ErrNoCPUSetController)
 	} else {
 		info.Cpuset = true
-		info.Cpus, info.Mems = GetCPUMemInfo(pth)
+		info.Cpus, info.Mems = getCPUMemInfo(pth)
 	}
 
 	if _, ok := ctrls[string(pidsController)]; !ok {
@@ -176,4 +155,36 @@ func isSystemdAvalailable() bool {
 	}
 
 	return fi.IsDir()
+}
+
+func getSwapLimit() bool {
+	_, unified, err := cgroups.ParseCgroupFileUnified(procSelfCGroupPath)
+	if err != nil {
+		return false
+	}
+
+	if unified == "" {
+		return false
+	}
+
+	cGroupPath := path.Join(cgroupRoot, unified, memorySwapMaxFile)
+	if _, err = os.Stat(cGroupPath); os.IsNotExist(err) {
+		return false
+	}
+
+	return true
+}
+
+func getCPUMemInfo(groupPath string) (string, string) {
+	cpus, err := os.ReadFile(path.Join(cgroupRoot, groupPath, cpuSetCPUEffectiveFile))
+	if err != nil {
+		return "", ""
+	}
+
+	mems, err := os.ReadFile(path.Join(cgroupRoot, groupPath, cpuSetMemEffectiveFile))
+	if err != nil {
+		return "", ""
+	}
+
+	return strings.TrimSpace(string(cpus)), strings.TrimSpace(string(mems))
 }

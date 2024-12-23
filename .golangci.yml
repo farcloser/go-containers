@@ -50,3 +50,5 @@ linters-settings:
           - github.com/moby/sys/userns
           - github.com/containerd/cgroups
           - github.com/containerd/containerd/v2/pkg/seccomp
+          - github.com/vishvananda/netlink
+          - github.com/vishvananda/netns
