@@ -16,15 +16,13 @@ const (
 	Version1  SystemVersion = 1
 	Version2  SystemVersion = 2
 
-	SystemdManager Manager = "systemd"
-	NoneManager    Manager = "none"
 	NoManager      Manager = ""
+	NoneManager    Manager = "none"
+	SystemdManager Manager = "systemd"
 
-	PrivateNsMode Mode = "private"
-	HostNsMode    Mode = "host"
 	NoNsMode      Mode = ""
-
-	CgroupRoot = "/sys/fs/cgroup"
+	HostNsMode    Mode = "host"
+	PrivateNsMode Mode = "private"
 )
 
 var (
@@ -123,47 +121,4 @@ type genericInfo struct {
 	CgroupDevicesEnabled bool
 	// Whether the kernel supports cgroup namespaces or not
 	CgroupNamespaces bool
-}
-
-// IsCpusetCpusAvailable returns `true` if the provided string set is contained
-// in cgroup's cpuset.cpus set, `false` otherwise.
-// If error is not nil a parsing error occurred.
-func (c cpuSetInfo) IsCpusetCpusAvailable(provided string) (bool, error) {
-	return isCpusetListAvailable(provided, c.Cpus)
-}
-
-// IsCpusetMemsAvailable returns `true` if the provided string set is contained
-// in cgroup's cpuset.mems set, `false` otherwise.
-// If error is not nil a parsing error occurred.
-func (c cpuSetInfo) IsCpusetMemsAvailable(provided string) (bool, error) {
-	return isCpusetListAvailable(provided, c.Mems)
-}
-
-func isCpusetListAvailable(provided, available string) (bool, error) {
-	parsedAvailable, err := ParseUintList(available)
-	if err != nil {
-		return false, err
-	}
-
-	// 8192 is the normal maximum number of CPUs in Linux, so accept numbers up to this
-	// or more if we actually have more CPUs.
-	maxCPUs := 8192
-	for m := range parsedAvailable {
-		if m > maxCPUs {
-			maxCPUs = m
-		}
-	}
-
-	parsedProvided, err := ParseUintListMaximum(provided, maxCPUs)
-	if err != nil {
-		return false, err
-	}
-
-	for k := range parsedProvided {
-		if !parsedAvailable[k] {
-			return false, nil
-		}
-	}
-
-	return true, nil
 }
