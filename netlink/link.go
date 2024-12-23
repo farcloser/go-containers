@@ -40,9 +40,8 @@ func LinkDel(netInterface string) error {
 	return err
 }
 
-func GetNetLinks(pid int, interfaces []net.Interface) (nlinks []netlink.Link, err error) {
+func GetNetNsLinks(pid int) (nlinks []netlink.Link, err error) {
 	var (
-		nlink    netlink.Link
 		nlHandle *netlink.Handle
 		nsHandle netns.NsHandle
 	)
@@ -67,16 +66,14 @@ func GetNetLinks(pid int, interfaces []net.Interface) (nlinks []netlink.Link, er
 
 	defer nlHandle.Close()
 
-	for _, v := range interfaces {
-		nlink, err = nlHandle.LinkByIndex(v.Index)
-		if err != nil {
-			err = fmt.Errorf("failed to retrieve the statistics for %s in netns %s: %w", v.Name, nsHandle, err)
+	candidates, err := nlHandle.LinkList()
+	if err != nil {
+		return nil, err
+	}
 
-			return nlinks, err
-		}
-		// exclude inactive interface
+	for _, nlink := range candidates {
+		// exclude down and loopback interfaces
 		if nlink.Attrs().Flags&net.FlagUp != 0 {
-			// exclude loopback interface
 			if nlink.Attrs().Flags&net.FlagLoopback != 0 || strings.HasPrefix(nlink.Attrs().Name, "lo") {
 				continue
 			}
