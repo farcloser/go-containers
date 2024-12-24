@@ -1,8 +1,14 @@
 package stats
 
 import (
+	"errors"
 	"sync"
 	"time"
+)
+
+var (
+	ErrFailedConversion = errors.New("cannot convert metric data to cgroups.Metrics")
+	ErrEmptyMetrics     = errors.New("nothing in provided metric")
 )
 
 // Entry represents the statistics data collected from a container.
