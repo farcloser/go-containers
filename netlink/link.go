@@ -17,17 +17,8 @@ var (
 
 type Link = netlink.Link
 
-func LinkByName(netInterface string) (Link, error) { //nolint:ireturn
+func LinkDel(netInterface string) error { //nolint:ireturn,nolintlint // note this is probably a bug in ireturn
 	link, err := netlink.LinkByName(netInterface)
-	if err != nil {
-		err = errors.Join(ErrLinkNotFound, err)
-	}
-
-	return link, err
-}
-
-func LinkDel(netInterface string) error {
-	link, err := LinkByName(netInterface)
 	if err != nil {
 		return err
 	}

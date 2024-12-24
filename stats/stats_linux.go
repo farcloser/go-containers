@@ -7,8 +7,6 @@ import (
 	"strings"
 	"time"
 
-	v2 "github.com/containerd/cgroups/v3/cgroup2/stats"
-
 	"go.farcloser.world/containers/cgroups"
 	"go.farcloser.world/containers/netlink"
 )
@@ -21,7 +19,25 @@ const (
 	memoryMaxLimit    = float64(^uint64(0))
 )
 
-func SetCgroup2StatsFields(previousStats *ContainerStats, metrics *v2.Metrics, links []netlink.Link) (Entry, error) {
+func SetCgroup2StatsFields(previousStats *ContainerStats, anydata interface{}, pid int) (Entry, error) {
+	var metrics *cgroups.Metrics
+
+	switch v := anydata.(type) {
+	case *cgroups.Metrics:
+		metrics = v
+	default:
+		return Entry{}, ErrFailedConversion
+	}
+
+	if metrics == nil {
+		return Entry{}, ErrEmptyMetrics
+	}
+
+	links, err := netlink.GetNetNsLinks(pid)
+	if err != nil {
+		return Entry{}, err
+	}
+
 	netRx, netTx := netlink.StatsForLinks(links)
 	blkRead, blkWrite := cgroups.CalculateIO(metrics)
 	mem := cgroups.CalculateMemUsage(metrics)
@@ -85,7 +101,7 @@ func getHostMemLimit() float64 {
 }
 
 // PercpuUsage is not supported in CgroupV2.
-func calculateCgroup2CPUPercent(previousStats *ContainerStats, metrics *v2.Metrics) float64 {
+func calculateCgroup2CPUPercent(previousStats *ContainerStats, metrics *cgroups.Metrics) float64 {
 	var (
 		cpuPercent = 0.0
 		cpu        = metrics.GetCPU()

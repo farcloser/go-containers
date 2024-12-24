@@ -2,6 +2,8 @@ package cgroups
 
 import "github.com/containerd/cgroups/v3/cgroup2/stats"
 
+type Metrics = stats.Metrics
+
 func CalculateMemUsage(metrics *stats.Metrics) float64 {
 	usage := metrics.GetMemory().GetUsage()
 	if v := metrics.GetMemory().GetInactiveFile(); v < usage {
