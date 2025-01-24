@@ -47,8 +47,9 @@ linters-settings:
           - github.com/opencontainers/go-digest
           - github.com/opencontainers/image-spec
           - github.com/opencontainers/runtime-spec
-          - github.com/moby/sys/userns
+          - github.com/containerd/containerd/v2
           - github.com/containerd/cgroups
-          - github.com/containerd/containerd/v2/pkg/seccomp
+          - github.com/distribution/reference
+          - github.com/moby/sys/userns
           - github.com/vishvananda/netlink
           - github.com/vishvananda/netns

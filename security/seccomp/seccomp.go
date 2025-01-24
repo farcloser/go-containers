@@ -1,5 +1,3 @@
-//go:build !linux && !windows
-
 /*
    Copyright Farcloser.
 
@@ -16,16 +14,4 @@
    limitations under the License.
 */
 
-/*
-   Portions from https://github.com/moby/moby/blob/cff4f20c44a3a7c882ed73934dec6a77246c6323/pkg/sysinfo/numcpu_other.go
-   Copyright (C) Docker/Moby authors.
-   Licensed under the Apache License, Version 2.0
-   NOTICE: https://github.com/moby/moby/blob/cff4f20c44a3a7c882ed73934dec6a77246c6323/NOTICE
-*/
-
-package sysinfo
-
-func numCPU() int {
-	// not implemented
-	return 0
-}
+package seccomp

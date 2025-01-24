@@ -1,4 +1,4 @@
-//go:build !linux && !windows
+//go:build !linux
 
 /*
    Copyright Farcloser.
@@ -16,16 +16,24 @@
    limitations under the License.
 */
 
-/*
-   Portions from https://github.com/moby/moby/blob/cff4f20c44a3a7c882ed73934dec6a77246c6323/pkg/sysinfo/numcpu_other.go
-   Copyright (C) Docker/Moby authors.
-   Licensed under the Apache License, Version 2.0
-   NOTICE: https://github.com/moby/moby/blob/cff4f20c44a3a7c882ed73934dec6a77246c6323/NOTICE
-*/
+package cgroups
 
-package sysinfo
+func Version() SystemVersion {
+	return NoVersion
+}
 
-func numCPU() int {
-	// not implemented
-	return 0
+func DefaultManager() Manager {
+	return NoManager
+}
+
+func DefaultMode() Mode {
+	return NoNsMode
+}
+
+func AvailableManagers() []Manager {
+	return []Manager{}
+}
+
+func AvailableModes() []Mode {
+	return []Mode{}
 }

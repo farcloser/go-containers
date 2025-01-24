@@ -2,7 +2,14 @@
 
 A very simple library providing basics for the containers ecosystem.
 
-At this point, this is merely hiding away `opencontainers/*`.
+This contains modification of code, copies of code, or references to code from:
+- github.com/containerd/nerdctl
+- github.com/containerd/containerd
+- github.com/moby/moby
+
+and others, as indicated in the relevant files.
+
+All copied and original code licensed under the Apache License.
 
 ## Dev
 
