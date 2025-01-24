@@ -23,7 +23,7 @@ import (
 
 	"github.com/containerd/containerd/v2/pkg/seccomp"
 
-	"go.farcloser.world/containers/cgroups"
+	"go.farcloser.world/containers/security/cgroups"
 )
 
 const (

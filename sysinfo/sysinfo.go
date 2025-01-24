@@ -16,7 +16,7 @@
 
 package sysinfo
 
-import "go.farcloser.world/containers/cgroups"
+import "go.farcloser.world/containers/security/cgroups"
 
 type SysInfo struct {
 	cgroups.Info

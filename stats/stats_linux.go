@@ -23,8 +23,8 @@ import (
 	"strings"
 	"time"
 
-	"go.farcloser.world/containers/cgroups"
 	"go.farcloser.world/containers/netlink"
+	"go.farcloser.world/containers/security/cgroups"
 )
 
 const (
