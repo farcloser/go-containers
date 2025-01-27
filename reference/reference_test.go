@@ -21,7 +21,8 @@ import (
 
 	"gotest.tools/v3/assert"
 
-	"go.farcloser.world/containers/digest"
+	"github.com/opencontainers/go-digest"
+
 	"go.farcloser.world/containers/reference"
 )
 

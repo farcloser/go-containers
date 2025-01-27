@@ -13,12 +13,18 @@ All copied and original code licensed under the Apache License.
 
 ## Dev
 
+### Requirements
+
+Review or call directly `./hack/dev-setup-linux.sh` or `./hack/dev-setup-macos.sh`
+
+Then, `make install-linters`
+
 ### Makefile
 
 ```bash
+make fix
 make lint
 make test
-make fix
 ```
 
 ### Local documentation
