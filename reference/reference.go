@@ -22,8 +22,7 @@ import (
 	"strings"
 
 	"github.com/distribution/reference"
-
-	"go.farcloser.world/containers/digest"
+	"github.com/opencontainers/go-digest"
 )
 
 type Protocol string

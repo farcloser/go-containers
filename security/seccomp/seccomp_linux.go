@@ -23,8 +23,7 @@ import (
 	"os"
 
 	"github.com/containerd/containerd/v2/contrib/seccomp"
-
-	"go.farcloser.world/containers/specs"
+	"github.com/opencontainers/runtime-spec/specs-go"
 )
 
 var (

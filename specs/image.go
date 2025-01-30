@@ -17,11 +17,10 @@
 package specs
 
 import (
+	"github.com/opencontainers/go-digest"
 	"github.com/opencontainers/image-spec/identity"
 	root "github.com/opencontainers/image-spec/specs-go"
 	images "github.com/opencontainers/image-spec/specs-go/v1"
-
-	"go.farcloser.world/containers/digest"
 )
 
 type (
