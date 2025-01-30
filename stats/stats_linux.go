@@ -23,8 +23,6 @@ import (
 	"strings"
 	"time"
 
-	// FIXME: this is higher level than the rest - other package should move to a "core" pack, and this should be
-	// end user
 	"go.farcloser.world/containers/netlink"
 	"go.farcloser.world/containers/security/cgroups"
 )

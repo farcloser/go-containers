@@ -19,9 +19,8 @@ package reference_test
 import (
 	"testing"
 
-	"gotest.tools/v3/assert"
-
 	"github.com/opencontainers/go-digest"
+	"gotest.tools/v3/assert"
 
 	"go.farcloser.world/containers/reference"
 )
