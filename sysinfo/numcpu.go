@@ -15,13 +15,14 @@
 */
 
 /*
-   Portions from https://github.com/moby/moby/blob/cff4f20c44a3a7c882ed73934dec6a77246c6323/pkg/sysinfo/numcpu.go
+   Package sysinfo has portions from
+		https://github.com/moby/moby/blob/cff4f20c44a3a7c882ed73934dec6a77246c6323/pkg/sysinfo/numcpu.go
    Copyright (C) Docker/Moby authors.
    Licensed under the Apache License, Version 2.0
    NOTICE: https://github.com/moby/moby/blob/cff4f20c44a3a7c882ed73934dec6a77246c6323/NOTICE
 */
 
-package sysinfo // import "github.com/docker/docker/pkg/sysinfo"
+package sysinfo
 
 import (
 	"runtime"
