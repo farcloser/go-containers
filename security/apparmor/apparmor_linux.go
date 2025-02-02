@@ -103,7 +103,7 @@ func CanApplyProfile(profileName string) bool {
 	return err == nil
 }
 
-// DumpProfile shows the content of the *current* profile.
+// DumpCurrentProfileAs shows the content of the *current* profile.
 func DumpCurrentProfileAs(name string) (string, error) {
 	return apparmor.DumpDefaultProfile(name)
 }
@@ -113,7 +113,7 @@ func LoadDefaultProfileAs(name string) error {
 	return apparmor.LoadDefaultProfile(name)
 }
 
-// Unload a profile. Needs access to /sys/kernel/security/apparmor/.remove .
+// UnloadProfile needs access to /sys/kernel/security/apparmor/.remove .
 func UnloadProfile(name string) error {
 	// FIXME: not safe
 	remover, err := os.OpenFile(

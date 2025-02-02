@@ -48,7 +48,7 @@ func checkSysInfo(t *testing.T, sysInfo *sysinfo.SysInfo) {
 	// Check if Seccomp is supported, via CONFIG_SECCOMP.then sysInfo.Seccomp must be TRUE , else FALSE
 	if err := unix.Prctl(unix.PR_GET_SECCOMP, 0, 0, 0, 0); err != unix.EINVAL { //nolint:err113
 		// Make sure the kernel has CONFIG_SECCOMP_FILTER.
-		if err := unix.Prctl(unix.PR_SET_SECCOMP, unix.SECCOMP_MODE_FILTER, 0, 0, 0); err != unix.EINVAL { //nolint:err113
+		if err = unix.Prctl(unix.PR_SET_SECCOMP, unix.SECCOMP_MODE_FILTER, 0, 0, 0); err != unix.EINVAL { //nolint:err113
 			assert.Assert(t, sysInfo.Seccomp)
 		}
 	} else {
