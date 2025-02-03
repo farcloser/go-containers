@@ -158,8 +158,8 @@ github.com/xeipuuv/gojsonschema v1.2.0 h1:LhYJRs+L4fBtjZUfuSZIKGeVu0QRy8e5Xi7D17
 github.com/xeipuuv/gojsonschema v1.2.0/go.mod h1:anYRn/JVcOK2ZgGU+IjEV4nwlhoK5sQluxsYJ78Id3Y=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
-go.farcloser.world/core v0.0.0-20250202044221-1f74e05fe355 h1:S3Dg6n52Y9bNE6ORnWhGT4xcXUjjLOGLrVzI+qRheSA=
-go.farcloser.world/core v0.0.0-20250202044221-1f74e05fe355/go.mod h1:gXbQVptSmDlD5SijiQM0QzpCDE4rK8EjXdYKaKNs1Sg=
+go.farcloser.world/core v0.1.0 h1:SKoK0lcyU/q/25KEq30v3GAA95OrNDnIq3++QB5Rbgw=
+go.farcloser.world/core v0.1.0/go.mod h1:gXbQVptSmDlD5SijiQM0QzpCDE4rK8EjXdYKaKNs1Sg=
 go.opencensus.io v0.24.0 h1:y73uSU6J157QMP2kn2r30vwW1A2W2WFwSCGnAVxeaD0=
 go.opencensus.io v0.24.0/go.mod h1:vNK8G9p7aAivkbmorf4v+7Hgx+Zs0yY+0fOtgBfjQKo=
 go.uber.org/goleak v1.1.12 h1:gZAh5/EyT/HQwlpkCy6wTpqfH9H8Lz8zbm3dZh+OyzA=

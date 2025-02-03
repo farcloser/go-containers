@@ -12,7 +12,7 @@ require (
 	github.com/opencontainers/runtime-spec v1.2.0
 	github.com/vishvananda/netlink v1.3.0
 	github.com/vishvananda/netns v0.0.5
-	go.farcloser.world/core v0.0.0-20250202044221-1f74e05fe355
+	go.farcloser.world/core v0.1.0
 	golang.org/x/sys v0.29.0
 	gotest.tools/v3 v3.5.1
 )
