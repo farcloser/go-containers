@@ -17,7 +17,7 @@ All copied and original code licensed under the Apache License.
 
 Review or call directly `./hack/dev-setup-linux.sh` or `./hack/dev-setup-macos.sh`
 
-Then, `make install-linters`
+Then, `make install-dev-tools`
 
 ### Makefile
 
