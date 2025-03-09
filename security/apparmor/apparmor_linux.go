@@ -87,7 +87,19 @@ func Enabled() bool {
 
 // CanLoadProfile checks if we can load a new profile. This requires root and full access.
 func CanLoadProfile() bool {
-	return !userns.RunningInUserNS() && os.Geteuid() == 0 && Supported() && Enabled()
+	// In some rare circumstances, apparmor may be enabled, but the tooling could be missing
+	// containerd implementation shells out to aa-parser, so, require it here.
+	// See https://github.com/containerd/nerdctl/issues/3945 for details.
+	canLoad := true
+	pth, err := exec.LookPath("apparmor_parser")
+	if err != nil {
+		canLoad = false
+	}
+	if _, err = os.Stat(pth); err != nil {
+		canLoad = false
+	}
+
+	return !userns.RunningInUserNS() && os.Geteuid() == 0 && Supported() && Enabled() && canLoad
 }
 
 // CanApplyProfile checks if we can apply an already loaded profile.
