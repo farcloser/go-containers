@@ -91,10 +91,12 @@ func CanLoadProfile() bool {
 	// containerd implementation shells out to aa-parser, so, require it here.
 	// See https://github.com/containerd/nerdctl/issues/3945 for details.
 	canLoad := true
+
 	pth, err := exec.LookPath("apparmor_parser")
 	if err != nil {
 		canLoad = false
 	}
+
 	if _, err = os.Stat(pth); err != nil {
 		canLoad = false
 	}
