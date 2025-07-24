@@ -19,6 +19,7 @@
 package reference_test
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/opencontainers/go-digest"
@@ -33,7 +34,7 @@ func TestReference(t *testing.T) {
 
 	//nolint:lll
 	needles := map[string]struct {
-		Error         string
+		Error         error
 		String        string
 		Suggested     string
 		FamiliarName  string
@@ -46,28 +47,28 @@ func TestReference(t *testing.T) {
 		ExplicitTag   string
 	}{
 		"": {
-			Error: "invalid reference format",
+			Error: reference.ErrInvalidImageReference,
 		},
 		"∞": {
-			Error: "invalid reference format",
+			Error: reference.ErrInvalidImageReference,
 		},
 		"abcd:∞": {
-			Error: "invalid reference format",
+			Error: reference.ErrInvalidImageReference,
 		},
 		"abcd@sha256:∞": {
-			Error: "invalid reference format",
+			Error: reference.ErrInvalidImageReference,
 		},
 		"abcd@∞": {
-			Error: "invalid reference format",
+			Error: reference.ErrInvalidImageReference,
 		},
 		"abcd:foo@sha256:∞": {
-			Error: "invalid reference format",
+			Error: reference.ErrInvalidImageReference,
 		},
 		"abcd:foo@∞": {
-			Error: "invalid reference format",
+			Error: reference.ErrInvalidImageReference,
 		},
 		"sha256:whatever": {
-			Error:        "",
+			Error:        nil,
 			String:       "docker.io/library/sha256:whatever",
 			Suggested:    "sha256-abcde",
 			FamiliarName: "sha256",
@@ -87,7 +88,7 @@ func TestReference(t *testing.T) {
 			ExplicitTag: "whatever",
 		},
 		"sha256:4b826db5f1f14d1db0b560304f189d4b17798ddce2278b7822c9d32313fe3f50": {
-			Error:        "",
+			Error:        nil,
 			String:       "sha256:4b826db5f1f14d1db0b560304f189d4b17798ddce2278b7822c9d32313fe3f50",
 			Suggested:    "untitled-abcde",
 			FamiliarName: "",
@@ -98,7 +99,7 @@ func TestReference(t *testing.T) {
 			Tag:          "",
 		},
 		"4b826db5f1f14d1db0b560304f189d4b17798ddce2278b7822c9d32313fe3f50": {
-			Error:        "",
+			Error:        nil,
 			String:       "sha256:4b826db5f1f14d1db0b560304f189d4b17798ddce2278b7822c9d32313fe3f50",
 			Suggested:    "untitled-abcde",
 			FamiliarName: "",
@@ -109,7 +110,7 @@ func TestReference(t *testing.T) {
 			Tag:          "",
 		},
 		"image_name": {
-			Error:        "",
+			Error:        nil,
 			String:       "docker.io/library/image_name:latest",
 			Suggested:    "image_name-abcde",
 			FamiliarName: "image_name",
@@ -121,7 +122,7 @@ func TestReference(t *testing.T) {
 			ExplicitTag:  "",
 		},
 		"library/image_name": {
-			Error:        "",
+			Error:        nil,
 			String:       "docker.io/library/image_name:latest",
 			Suggested:    "image_name-abcde",
 			FamiliarName: "image_name",
@@ -133,7 +134,7 @@ func TestReference(t *testing.T) {
 			ExplicitTag:  "",
 		},
 		"something/image_name": {
-			Error:        "",
+			Error:        nil,
 			String:       "docker.io/something/image_name:latest",
 			Suggested:    "image_name-abcde",
 			FamiliarName: "something/image_name",
@@ -145,7 +146,7 @@ func TestReference(t *testing.T) {
 			ExplicitTag:  "",
 		},
 		"docker.io/library/image_name": {
-			Error:        "",
+			Error:        nil,
 			String:       "docker.io/library/image_name:latest",
 			Suggested:    "image_name-abcde",
 			FamiliarName: "image_name",
@@ -157,7 +158,7 @@ func TestReference(t *testing.T) {
 			ExplicitTag:  "",
 		},
 		"image_name:latest": {
-			Error:        "",
+			Error:        nil,
 			String:       "docker.io/library/image_name:latest",
 			Suggested:    "image_name-abcde",
 			FamiliarName: "image_name",
@@ -169,7 +170,7 @@ func TestReference(t *testing.T) {
 			ExplicitTag:  "latest",
 		},
 		"image_name:foo": {
-			Error:        "",
+			Error:        nil,
 			String:       "docker.io/library/image_name:foo",
 			Suggested:    "image_name-abcde",
 			FamiliarName: "image_name",
@@ -181,7 +182,7 @@ func TestReference(t *testing.T) {
 			ExplicitTag:  "foo",
 		},
 		"image_name@sha256:4b826db5f1f14d1db0b560304f189d4b17798ddce2278b7822c9d32313fe3f50": {
-			Error:        "",
+			Error:        nil,
 			String:       "docker.io/library/image_name@sha256:4b826db5f1f14d1db0b560304f189d4b17798ddce2278b7822c9d32313fe3f50",
 			Suggested:    "image_name-abcde",
 			FamiliarName: "image_name",
@@ -193,7 +194,7 @@ func TestReference(t *testing.T) {
 			ExplicitTag:  "",
 		},
 		"image_name:latest@sha256:4b826db5f1f14d1db0b560304f189d4b17798ddce2278b7822c9d32313fe3f50": {
-			Error:        "",
+			Error:        nil,
 			String:       "docker.io/library/image_name:latest@sha256:4b826db5f1f14d1db0b560304f189d4b17798ddce2278b7822c9d32313fe3f50",
 			Suggested:    "image_name-abcde",
 			FamiliarName: "image_name",
@@ -205,7 +206,7 @@ func TestReference(t *testing.T) {
 			ExplicitTag:  "latest",
 		},
 		"ghcr.io:1234/image_name": {
-			Error:        "",
+			Error:        nil,
 			String:       "ghcr.io:1234/image_name:latest",
 			Suggested:    "image_name-abcde",
 			FamiliarName: "ghcr.io:1234/image_name",
@@ -217,7 +218,7 @@ func TestReference(t *testing.T) {
 			ExplicitTag:  "",
 		},
 		"ghcr.io/sub_name/image_name": {
-			Error:        "",
+			Error:        nil,
 			String:       "ghcr.io/sub_name/image_name:latest",
 			Suggested:    "image_name-abcde",
 			FamiliarName: "ghcr.io/sub_name/image_name",
@@ -229,14 +230,15 @@ func TestReference(t *testing.T) {
 			ExplicitTag:  "",
 		},
 		"oci-archive:///tmp/build/saved-image.tar": {
-			Error: "image must be loaded from archive before parsing image reference",
+			Error: reference.ErrLoadOCIArchiveRequired,
 		},
 	}
 
 	for index, test := range needles {
 		parsed, err := reference.Parse(index)
-		if test.Error != "" || err != nil {
-			assert.Error(t, err, test.Error)
+		if test.Error != nil || err != nil {
+			assert.Assert(t, errors.Is(err, test.Error))
+			// assert.Error(t, err, test.Error)
 
 			continue
 		}
