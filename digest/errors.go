@@ -14,19 +14,17 @@
    limitations under the License.
 */
 
-package netlink
+package digest
 
-import "github.com/vishvananda/netlink"
+import up "github.com/opencontainers/go-digest"
 
-// StatsForLinks calculates the total received and transmitted bytes.
-func StatsForLinks(links []netlink.Link) (received, transmitted float64) {
-	for _, l := range links {
-		stats := l.Attrs().Statistics
-		if stats != nil {
-			received += float64(stats.RxBytes)
-			transmitted += float64(stats.TxBytes)
-		}
-	}
+var (
+	// ErrDigestInvalidFormat returned when digest format invalid.
+	ErrDigestInvalidFormat = up.ErrDigestInvalidFormat
 
-	return received, transmitted
-}
+	// ErrDigestInvalidLength returned when digest has invalid length.
+	ErrDigestInvalidLength = up.ErrDigestInvalidLength
+
+	// ErrDigestUnsupported returned when the digest algorithm is unsupported.
+	ErrDigestUnsupported = up.ErrDigestUnsupported
+)

@@ -18,4 +18,5 @@ package specs
 
 import "github.com/opencontainers/runtime-spec/specs-go"
 
+// LinuxSeccomp represents syscall restrictions.
 type LinuxSeccomp = specs.LinuxSeccomp

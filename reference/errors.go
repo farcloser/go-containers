@@ -14,19 +14,15 @@
    limitations under the License.
 */
 
-package netlink
+package reference
 
-import "github.com/vishvananda/netlink"
+import "errors"
 
-// StatsForLinks calculates the total received and transmitted bytes.
-func StatsForLinks(links []netlink.Link) (received, transmitted float64) {
-	for _, l := range links {
-		stats := l.Attrs().Statistics
-		if stats != nil {
-			received += float64(stats.RxBytes)
-			transmitted += float64(stats.TxBytes)
-		}
-	}
-
-	return received, transmitted
-}
+var (
+	// ErrInvalidImageReference indicates that the image reference is invalid.
+	ErrInvalidImageReference = errors.New("invalid image reference")
+	// ErrInvalidPattern indicates that the pattern used to parse the image reference is invalid.
+	ErrInvalidPattern = errors.New("invalid pattern")
+	// ErrLoadOCIArchiveRequired indicates that the image must be loaded from an OCI archive.
+	ErrLoadOCIArchiveRequired = errors.New("image must be loaded from archive before parsing image reference")
+)

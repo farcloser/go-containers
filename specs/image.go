@@ -24,27 +24,53 @@ import (
 )
 
 type (
-	Platform    = images.Platform
-	Descriptor  = images.Descriptor
-	Image       = images.Image
-	Index       = images.Index
-	Manifest    = images.Manifest
+	// Platform describes the platform which the image in the manifest runs on.
+	Platform = images.Platform
+	// Descriptor describes the disposition of targeted content.
+	Descriptor = images.Descriptor
+	// Image is the image manifest.
+	Image = images.Image
+	// Index is the image index.
+	Index = images.Index
+	// Manifest is the image manifest.
+	Manifest = images.Manifest
+	// ImageConfig is the image configuration.
 	ImageConfig = images.ImageConfig
-	History     = images.History
+	// History is the history of the image.
+	History = images.History
+	// ImageLayout is the image layout.
 	ImageLayout = images.ImageLayout
-	RootFS      = images.RootFS
-	Versioned   = root.Versioned
+	// RootFS is the root filesystem of the image.
+	RootFS = images.RootFS
+	// Versioned is the versioned image specification.
+	Versioned = root.Versioned
 )
 
 const (
-	MediaTypeImageManifest  = images.MediaTypeImageManifest
-	MediaTypeImageConfig    = images.MediaTypeImageConfig
+	// MediaTypeDescriptor specifies the media type for a content descriptor.
+	MediaTypeDescriptor = images.MediaTypeDescriptor
+	// MediaTypeLayoutHeader specifies the media type for the oci-layout.
+	MediaTypeLayoutHeader = images.MediaTypeLayoutHeader
+	// MediaTypeEmptyJSON specifies the media type for an unused blob containing the value "{}".
+	MediaTypeEmptyJSON = images.MediaTypeEmptyJSON
+	// MediaTypeImageManifest specifies the media type for an image manifest.
+	MediaTypeImageManifest = images.MediaTypeImageManifest
+	// MediaTypeImageConfig specifies the media type for the image configuration.
+	MediaTypeImageConfig = images.MediaTypeImageConfig
+	// MediaTypeImageLayerZstd is the media type used for zstd compressed
+	// layers referenced by the manifest.
 	MediaTypeImageLayerZstd = images.MediaTypeImageLayerZstd
+	// MediaTypeImageLayerGzip is the media type used for gzipped layers
+	// referenced by the manifest.
 	MediaTypeImageLayerGzip = images.MediaTypeImageLayerGzip
-	MediaTypeImageIndex     = images.MediaTypeImageIndex
-	MediaTypeImageLayer     = images.MediaTypeImageLayer
+	// MediaTypeImageIndex specifies the media type for an image index.
+	MediaTypeImageIndex = images.MediaTypeImageIndex
+	// MediaTypeImageLayer is the media type used for layers referenced by the manifest.
+	MediaTypeImageLayer = images.MediaTypeImageLayer
 )
 
+// ChainID takes a slice of digests and returns the ChainID corresponding to
+// the last entry.
 func ChainID(dgsts []digest.Digest) digest.Digest {
 	return identity.ChainID(dgsts)
 }

@@ -27,13 +27,17 @@ import (
 )
 
 var (
-	ErrCannotLoadProfile   = errors.New("cannot load seccomp profile")
+	// ErrCannotLoadProfile is returned when the seccomp profile cannot be loaded.
+	ErrCannotLoadProfile = errors.New("cannot load seccomp profile")
+	// ErrCannotDecodeProfile is returned when the seccomp profile cannot be decoded.
 	ErrCannotDecodeProfile = errors.New("cannot decode seccomp profile")
 )
 
+// LoadProfile loads a seccomp profile from the specified file and applies it to the given spec.
 func LoadProfile(spec *specs.Spec, profile string) error {
 	spec.Linux.Seccomp = &specs.LinuxSeccomp{}
 
+	//nolint:gosec
 	f, err := os.ReadFile(profile)
 	if err != nil {
 		return errors.Join(fmt.Errorf("%w %q", ErrCannotLoadProfile, profile), err)
@@ -46,6 +50,7 @@ func LoadProfile(spec *specs.Spec, profile string) error {
 	return nil
 }
 
+// LoadDefaultProfile loads the default seccomp profile and applies it to the given spec.
 func LoadDefaultProfile(s *specs.Spec) {
 	s.Linux.Seccomp = seccomp.DefaultProfile(s)
 }

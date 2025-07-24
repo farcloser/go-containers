@@ -20,35 +20,53 @@ import (
 	"errors"
 )
 
+// SystemVersion represents the version of the cgroup system in use.
 type SystemVersion int
 
 type (
+	// Manager represents the cgroup manager in use.
 	Manager string
-	Mode    string
+	// Mode represents the namespace mode for cgroups.
+	Mode string
 )
 
 const (
+	// NoVersion indicates that no specific cgroup version is set.
 	NoVersion SystemVersion = 0
-	Version1  SystemVersion = 1
-	Version2  SystemVersion = 2
+	// Version1 indicates that cgroup v1 is in use.
+	Version1 SystemVersion = 1
+	// Version2 indicates that cgroup v2 is in use.
+	Version2 SystemVersion = 2
 
-	NoManager      Manager = ""
-	NoneManager    Manager = "none"
+	// NoManager indicates that no specific cgroup manager is set.
+	NoManager Manager = ""
+	// NoneManager indicates that no cgroup manager is used.
+	NoneManager Manager = "none"
+	// SystemdManager indicates that systemd is used as the cgroup manager.
 	SystemdManager Manager = "systemd"
 
-	NoNsMode      Mode = ""
-	HostNsMode    Mode = "host"
+	// NoNsMode indicates that no specific namespace mode is set.
+	NoNsMode Mode = ""
+	// HostNsMode indicates that the host namespace mode is used.
+	HostNsMode Mode = "host"
+	// PrivateNsMode indicates that the private namespace mode is used.
 	PrivateNsMode Mode = "private"
 )
 
 var (
+	// ErrNoMemoryController is returned when the system does not support memory controller.
 	ErrNoMemoryController = errors.New("no systemd memory controller found")
-	ErrNoCPUController    = errors.New("no systemd cpu controller found")
-	ErrNoIoController     = errors.New("no systemd io controller found")
+	// ErrNoCPUController is returned when the system does not support CPU controller.
+	ErrNoCPUController = errors.New("no systemd cpu controller found")
+	// ErrNoIoController is returned when the system does not support IO controller.
+	ErrNoIoController = errors.New("no systemd io controller found")
+	// ErrNoCPUSetController is returned when the system does not support CPU set controller.
 	ErrNoCPUSetController = errors.New("no systemd cpuset controller found")
-	ErrNoPidsController   = errors.New("no systemd pids controller found")
+	// ErrNoPidsController is returned when the system does not support PIDs controller.
+	ErrNoPidsController = errors.New("no systemd pids controller found")
 )
 
+// Info contains information about the cgroup system, including memory, CPU, block IO,.
 type Info struct {
 	memInfo
 	cpuInfo

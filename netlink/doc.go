@@ -14,19 +14,7 @@
    limitations under the License.
 */
 
+// Package netlink provides a set of functions to interact with network interfaces, including retrieving
+// information about network devices, addresses, routes, and more.
+// It allows for querying and manipulating network configurations on Linux systems.
 package netlink
-
-import "github.com/vishvananda/netlink"
-
-// StatsForLinks calculates the total received and transmitted bytes.
-func StatsForLinks(links []netlink.Link) (received, transmitted float64) {
-	for _, l := range links {
-		stats := l.Attrs().Statistics
-		if stats != nil {
-			received += float64(stats.RxBytes)
-			transmitted += float64(stats.TxBytes)
-		}
-	}
-
-	return received, transmitted
-}

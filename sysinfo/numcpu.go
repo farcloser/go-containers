@@ -32,7 +32,7 @@ import (
 // the number of CPUs which are currently online. On other platforms,
 // it's the equivalent of [runtime.NumCPU].
 func NumCPU() int {
-	if ncpu := numCPU(); ncpu > 0 {
+	if ncpu := platformNumCPU(); ncpu > 0 {
 		return ncpu
 	}
 

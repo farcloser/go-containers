@@ -14,19 +14,6 @@
    limitations under the License.
 */
 
-package netlink
-
-import "github.com/vishvananda/netlink"
-
-// StatsForLinks calculates the total received and transmitted bytes.
-func StatsForLinks(links []netlink.Link) (received, transmitted float64) {
-	for _, l := range links {
-		stats := l.Attrs().Statistics
-		if stats != nil {
-			received += float64(stats.RxBytes)
-			transmitted += float64(stats.TxBytes)
-		}
-	}
-
-	return received, transmitted
-}
+// Package sysinfo provides a set of functions to retrieve system information such as CPU, memory, disk, and network
+// details.
+package sysinfo

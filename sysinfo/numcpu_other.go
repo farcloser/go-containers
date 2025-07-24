@@ -25,7 +25,7 @@
 
 package sysinfo
 
-func numCPU() int {
+func platformNumCPU() int {
 	// not implemented
 	return 0
 }

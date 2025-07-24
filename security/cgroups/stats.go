@@ -18,8 +18,10 @@ package cgroups
 
 import "github.com/containerd/cgroups/v3/cgroup2/stats"
 
+// Metrics represents the cgroup metrics type.
 type Metrics = stats.Metrics
 
+// CalculateMemUsage calculates the memory usage from the provided metrics.
 func CalculateMemUsage(metrics *stats.Metrics) float64 {
 	usage := metrics.GetMemory().GetUsage()
 	if v := metrics.GetMemory().GetInactiveFile(); v < usage {
@@ -29,9 +31,8 @@ func CalculateMemUsage(metrics *stats.Metrics) float64 {
 	return float64(usage)
 }
 
-func CalculateIO(metrics *stats.Metrics) (uint64, uint64) {
-	var ioRead, ioWrite uint64
-
+// CalculateIO calculates the I/O read and write bytes from the provided metrics.
+func CalculateIO(metrics *stats.Metrics) (ioRead, ioWrite uint64) {
 	for _, iOEntry := range metrics.GetIo().GetUsage() {
 		rios := iOEntry.GetRios()
 		wios := iOEntry.GetWios()

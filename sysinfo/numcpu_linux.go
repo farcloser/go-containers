@@ -30,7 +30,7 @@ import "golang.org/x/sys/unix"
 // for use to this process.
 //
 // Returns 0 on errors. Use |runtime.NumCPU| in that case.
-func numCPU() int {
+func platformNumCPU() int {
 	// Gets the affinity mask for a process: The very one invoking this function.
 	var mask unix.CPUSet
 

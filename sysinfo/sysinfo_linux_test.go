@@ -22,6 +22,8 @@
    NOTICE: https://github.com/moby/moby/blob/cff4f20c44a3a7c882ed73934dec6a77246c6323/NOTICE
 */
 
+//revive:disable:add-constant
+
 package sysinfo_test // import "github.com/docker/docker/pkg/sysinfo"
 
 import (

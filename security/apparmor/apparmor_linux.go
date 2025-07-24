@@ -36,15 +36,19 @@ import (
 
 type mode = string
 
+// Profile represents an AppArmor profile.
 type Profile struct {
 	Name string `json:"name"`
 	Mode mode   `json:"mode,omitempty"`
 }
 
 const (
-	Enforce    = mode("enforce")
+	// Enforce is the AppArmor mode that enforces the profile.
+	Enforce = mode("enforce")
+	// Unconfined is the AppArmor mode that does not apply any profile.
 	Unconfined = mode("unconfined")
-	Complain   = mode("complain")
+	// Complain is the AppArmor mode that logs violations but does not enforce the profile.
+	Complain = mode("complain")
 
 	kernelPath   = "/sys/kernel/security/apparmor"
 	removePath   = "/sys/kernel/security/apparmor/.remove"

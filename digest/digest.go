@@ -20,27 +20,24 @@ import (
 	up "github.com/opencontainers/go-digest"
 )
 
-var (
-	// ErrDigestInvalidFormat returned when digest format invalid.
-	ErrDigestInvalidFormat = up.ErrDigestInvalidFormat
-
-	// ErrDigestInvalidLength returned when digest has invalid length.
-	ErrDigestInvalidLength = up.ErrDigestInvalidLength
-
-	// ErrDigestUnsupported returned when the digest algorithm is unsupported.
-	ErrDigestUnsupported = up.ErrDigestUnsupported
-)
-
+// Digest allows simple protection of hex formatted digest strings, prefixed
+// by their algorithm. Strings of type Digest have some guarantee of being in
+// the correct format and it provides quick access to the components of a
+// digest string.
 type Digest = up.Digest
 
+// FromBytes creates a Digest from a byte slice.
 func FromBytes(p []byte) Digest {
 	return up.FromBytes(p)
 }
 
+// FromString creates a Digest from a string.
 func FromString(s string) Digest {
 	return FromBytes([]byte(s))
 }
 
+// Parse parses a digest string and returns a Digest.
 func Parse(s string) (Digest, error) {
+	//nolint:wrapcheck
 	return up.Parse(s)
 }

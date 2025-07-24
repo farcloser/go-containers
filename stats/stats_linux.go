@@ -35,7 +35,8 @@ const (
 	memoryMaxLimit    = float64(^uint64(0))
 )
 
-func SetCgroup2StatsFields(previousStats *ContainerStats, anydata interface{}, pid int) (Entry, error) {
+// SetCgroup2StatsFields sets the fields of ContainerStats based on cgroup v2 metrics.
+func SetCgroup2StatsFields(previousStats *ContainerStats, anydata any, pid int) (Entry, error) {
 	var metrics *cgroups.Metrics
 
 	switch v := anydata.(type) {
@@ -81,7 +82,7 @@ func SetCgroup2StatsFields(previousStats *ContainerStats, anydata interface{}, p
 	}, nil
 }
 
-func calculateMemPercent(limit float64, usedNo float64) float64 {
+func calculateMemPercent(limit, usedNo float64) float64 {
 	// Limit will never be 0 unless the container is not running, and we haven't
 	// got any data from cgroup
 	if limit != 0 {
@@ -103,6 +104,7 @@ func getHostMemLimit() float64 {
 		if strings.HasPrefix(scanner.Text(), "MemTotal:") {
 			fields := strings.Fields(scanner.Text())
 			if len(fields) > 1 {
+				//revive:disable:add-constant
 				memKb, err := strconv.ParseUint(fields[1], 10, 64)
 				if err == nil {
 					return float64(memKb * kiloPerMega) // kB to bytes
@@ -129,6 +131,7 @@ func calculateCgroup2CPUPercent(previousStats *ContainerStats, metrics *cgroups.
 		timeDelta = time.Since(previousStats.Time)
 	)
 
+	//revive:disable:add-constant
 	if cpuDelta > 0.0 {
 		cpuPercent = cpuDelta / float64(timeDelta.Nanoseconds()) * percent
 	}

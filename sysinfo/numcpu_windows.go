@@ -22,7 +22,9 @@
    NOTICE: https://github.com/moby/moby/blob/cff4f20c44a3a7c882ed73934dec6a77246c6323/NOTICE
 */
 
-package sysinfo // import "github.com/docker/docker/pkg/sysinfo"
+//revive:disable:add-constant
+
+package sysinfo
 
 import (
 	"unsafe"
@@ -47,13 +49,14 @@ func popcnt(x uint64) (n byte) { //nolint:varnamelen
 	return byte(x >> 56) //nolint:mnd
 }
 
-func numCPU() int {
+func platformNumCPU() int {
 	// Gets the affinity mask for a process
 	var mask, sysmask uintptr
 
 	currentProcess, _, _ := getCurrentProcess.Call()
 
 	ret, _, _ := getProcessAffinityMask.Call(
+		//nolint:gosec
 		currentProcess, uintptr(unsafe.Pointer(&mask)), uintptr(unsafe.Pointer(&sysmask)))
 	if ret == 0 {
 		return 0
