@@ -25,12 +25,12 @@ import (
 	"github.com/opencontainers/go-digest"
 )
 
+// Protocol represents the protocol used for the image reference.
 type Protocol string
 
 const shortIDLength = 5
 
-var ErrLoadOCIArchiveRequired = errors.New("image must be loaded from archive before parsing image reference")
-
+// ImageReference represents a reference to an image, which may include a protocol, domain, path, tag, and digest.
 type ImageReference struct {
 	Protocol    Protocol
 	Digest      digest.Digest
@@ -42,6 +42,7 @@ type ImageReference struct {
 	nn reference.Reference
 }
 
+// Name returns the name of the image reference, including the domain and path.
 func (ir *ImageReference) Name() string {
 	ret := ir.Domain
 	if ret != "" {
@@ -53,6 +54,7 @@ func (ir *ImageReference) Name() string {
 	return ret
 }
 
+// FamiliarName returns a familiar (eg: shortened) name for the image reference.
 func (ir *ImageReference) FamiliarName() string {
 	if ir.Protocol != "" && ir.Domain == "" {
 		return ir.Path
@@ -67,14 +69,21 @@ func (ir *ImageReference) FamiliarName() string {
 	return ""
 }
 
+// FamiliarMatch checks if the image reference matches a familiar pattern.
 func (ir *ImageReference) FamiliarMatch(pattern string) (bool, error) {
 	if ir.nn != nil {
-		return reference.FamiliarMatch(pattern, ir.nn)
+		match, err := reference.FamiliarMatch(pattern, ir.nn)
+		if err != nil {
+			err = errors.Join(ErrInvalidPattern, err)
+		}
+
+		return match, err
 	}
 
 	return false, nil
 }
 
+// String returns the string representation of the image reference.
 func (ir *ImageReference) String() string {
 	if ir.Protocol != "" && ir.Domain == "" {
 		return ir.Path
@@ -91,6 +100,7 @@ func (ir *ImageReference) String() string {
 	return ""
 }
 
+// SuggestContainerName generates a suggested container name based on the image reference.
 func (ir *ImageReference) SuggestContainerName(suffix string) string {
 	name := "untitled"
 	if ir.Protocol != "" && ir.Domain == "" {
@@ -99,9 +109,11 @@ func (ir *ImageReference) SuggestContainerName(suffix string) string {
 		name = path.Base(ir.Path)
 	}
 
+	//revive:disable:add-constant
 	return name + "-" + suffix[:5]
 }
 
+// Parse parses a raw image reference string and returns an ImageReference object.
 func Parse(rawRef string) (*ImageReference, error) {
 	imageRef := &ImageReference{}
 
@@ -125,7 +137,7 @@ func Parse(rawRef string) (*ImageReference, error) {
 
 	imageRef.nn, err = reference.ParseNormalizedNamed(rawRef)
 	if err != nil {
-		return imageRef, err
+		return imageRef, errors.Join(ErrInvalidImageReference, err)
 	}
 
 	if tg, ok := imageRef.nn.(reference.Tagged); ok {

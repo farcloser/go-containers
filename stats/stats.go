@@ -23,8 +23,10 @@ import (
 )
 
 var (
+	// ErrFailedConversion is returned when the conversion from metric data to cgroups.Metrics fails.
 	ErrFailedConversion = errors.New("cannot convert metric data to cgroups.Metrics")
-	ErrEmptyMetrics     = errors.New("nothing in provided metric")
+	// ErrEmptyMetrics is returned when the provided metric data is empty.
+	ErrEmptyMetrics = errors.New("nothing in provided metric")
 )
 
 // Entry represents the statistics data collected from a container.
@@ -59,12 +61,11 @@ type Stats struct {
 
 // NewStats is from
 // https://github.com/docker/cli/blob/3fb4fb83dfb5db0c0753a8316f21aea54dab32c5/cli/command/container/formatter_stats.go#L113-L116
-//
-//nolint:lll
 func NewStats(containerID string) *Stats {
 	return &Stats{Entry: Entry{ID: containerID}}
 }
 
+// SetStatistics sets the statistics for the container stats synchronously.
 func (cs *Stats) SetStatistics(s Entry) {
 	cs.mutex.Lock()
 	defer cs.mutex.Unlock()
@@ -72,6 +73,7 @@ func (cs *Stats) SetStatistics(s Entry) {
 	cs.Entry = s
 }
 
+// GetStatistics retrieves the statistics for the container stats synchronously.
 func (cs *Stats) GetStatistics() Entry {
 	cs.mutex.Lock()
 	defer cs.mutex.Unlock()
@@ -79,6 +81,7 @@ func (cs *Stats) GetStatistics() Entry {
 	return cs.Entry
 }
 
+// GetError retrieves the error associated with the stats synchronously.
 func (cs *Stats) GetError() error {
 	cs.mutex.Lock()
 	defer cs.mutex.Unlock()
@@ -86,6 +89,7 @@ func (cs *Stats) GetError() error {
 	return cs.err
 }
 
+// SetErrorAndReset sets the error and resets the statistics fields to their zero values.
 func (cs *Stats) SetErrorAndReset(err error) {
 	cs.mutex.Lock()
 	defer cs.mutex.Unlock()
@@ -103,6 +107,7 @@ func (cs *Stats) SetErrorAndReset(err error) {
 	cs.IsInvalid = true
 }
 
+// SetError sets the error and marks the stats as invalid.
 func (cs *Stats) SetError(err error) {
 	cs.mutex.Lock()
 	defer cs.mutex.Unlock()

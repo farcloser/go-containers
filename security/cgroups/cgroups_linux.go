@@ -26,6 +26,7 @@ import (
 	"github.com/moby/sys/userns"
 )
 
+// Controller represents a cgroup controller type.
 type Controller string
 
 const (
@@ -45,6 +46,7 @@ const (
 	cpuSetMemEffectiveFile = "cpuset.mems.effective"
 )
 
+// Version returns the cgroup version in use on the system.
 func Version() SystemVersion {
 	if cgroups.Mode() == cgroups.Unified {
 		return Version2
@@ -53,6 +55,7 @@ func Version() SystemVersion {
 	return Version1
 }
 
+// DefaultManager returns the default cgroup manager based on the system configuration.
 func DefaultManager() Manager {
 	if Version() == Version2 && isSystemdAvalailable() {
 		return SystemdManager
@@ -61,6 +64,7 @@ func DefaultManager() Manager {
 	return NoneManager
 }
 
+// DefaultMode returns the default cgroup mode based on the system configuration.
 func DefaultMode() Mode {
 	if Version() == Version2 && isSystemdAvalailable() {
 		return PrivateNsMode
@@ -69,6 +73,7 @@ func DefaultMode() Mode {
 	return NoNsMode
 }
 
+// AvailableManagers returns a list of available cgroup managers based on the system configuration.
 func AvailableManagers() []Manager {
 	candidates := []Manager{NoneManager}
 	if Version() == Version2 && isSystemdAvalailable() {
@@ -78,6 +83,7 @@ func AvailableManagers() []Manager {
 	return candidates
 }
 
+// AvailableModes returns a list of available cgroup modes based on the system configuration.
 func AvailableModes() []Mode {
 	candidates := []Mode{HostNsMode}
 	if Version() == Version2 && isSystemdAvalailable() {
@@ -87,6 +93,7 @@ func AvailableModes() []Mode {
 	return candidates
 }
 
+// New creates a new Info object that contains information about the cgroup controllers available on the system.
 func New(pth string) (*Info, []error, error) {
 	var warnings []error
 
@@ -191,16 +198,18 @@ func getSwapLimit() bool {
 	return true
 }
 
-func getCPUMemInfo(groupPath string) (string, string) {
-	cpus, err := os.ReadFile(path.Join(cgroupRoot, groupPath, cpuSetCPUEffectiveFile))
+func getCPUMemInfo(groupPath string) (cpu, mems string) {
+	//nolint:gosec
+	cpusB, err := os.ReadFile(path.Join(cgroupRoot, groupPath, cpuSetCPUEffectiveFile))
 	if err != nil {
 		return "", ""
 	}
 
-	mems, err := os.ReadFile(path.Join(cgroupRoot, groupPath, cpuSetMemEffectiveFile))
+	//nolint:gosec
+	memsB, err := os.ReadFile(path.Join(cgroupRoot, groupPath, cpuSetMemEffectiveFile))
 	if err != nil {
 		return "", ""
 	}
 
-	return strings.TrimSpace(string(cpus)), strings.TrimSpace(string(mems))
+	return strings.TrimSpace(string(cpusB)), strings.TrimSpace(string(memsB))
 }

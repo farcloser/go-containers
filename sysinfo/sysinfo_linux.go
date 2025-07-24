@@ -31,6 +31,7 @@ const (
 	appArmorPath   = "/sys/kernel/security/apparmor"
 )
 
+// New creates a new SysInfo instance by reading system information from the specified cgroup path.
 func New(path string) (*SysInfo, []error, error) {
 	if path == "" {
 		path = "/"
@@ -59,6 +60,7 @@ func New(path string) (*SysInfo, []error, error) {
 }
 
 func readProcBool(path string) bool {
+	//nolint:gosec
 	val, err := os.ReadFile(path)
 	if err != nil {
 		return false

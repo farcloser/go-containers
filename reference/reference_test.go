@@ -14,6 +14,8 @@
    limitations under the License.
 */
 
+//revive:disable:add-constant
+
 package reference_test
 
 import (
@@ -25,6 +27,7 @@ import (
 	"go.farcloser.world/containers/reference"
 )
 
+//revive:disable:function-length
 func TestReference(t *testing.T) {
 	t.Parallel()
 

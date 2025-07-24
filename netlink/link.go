@@ -27,16 +27,20 @@ import (
 )
 
 var (
+	// ErrLinkNotFound is returned when a link cannot be found.
 	ErrLinkNotFound = errors.New("link not found")
-	ErrRemoveFail   = errors.New("unable to remove network interface")
+	// ErrRemoveFail is returned when a link cannot be removed.
+	ErrRemoveFail = errors.New("unable to remove network interface")
 )
 
+// Link represents a link device from netlink.
 type Link = netlink.Link
 
+// LinkDel deletes a link by its name.
 func LinkDel(netInterface string) error { //nolint:ireturn,nolintlint // note this is probably a bug in ireturn
 	link, err := netlink.LinkByName(netInterface)
 	if err != nil {
-		return err
+		return errors.Join(ErrFailedToDeleteLink, err)
 	}
 
 	err = netlink.LinkDel(link)
@@ -47,6 +51,7 @@ func LinkDel(netInterface string) error { //nolint:ireturn,nolintlint // note th
 	return err
 }
 
+// GetNetNsLinks retrieves all network links in the specified network namespace by PID.
 func GetNetNsLinks(pid int) (nlinks []netlink.Link, err error) {
 	var (
 		nlHandle *netlink.Handle
@@ -75,7 +80,7 @@ func GetNetNsLinks(pid int) (nlinks []netlink.Link, err error) {
 
 	candidates, err := nlHandle.LinkList()
 	if err != nil {
-		return nil, err
+		return nil, errors.Join(ErrFailedToListLinks, err)
 	}
 
 	for _, nlink := range candidates {

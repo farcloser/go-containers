@@ -18,22 +18,27 @@
 
 package cgroups
 
+// Version returns the cgroup version in use on the system.
 func Version() SystemVersion {
 	return NoVersion
 }
 
+// DefaultManager returns the default cgroup manager based on the system configuration.
 func DefaultManager() Manager {
 	return NoManager
 }
 
+// DefaultMode returns the default cgroup mode.
 func DefaultMode() Mode {
 	return NoNsMode
 }
 
+// AvailableManagers returns a list of available cgroup managers.
 func AvailableManagers() []Manager {
 	return []Manager{}
 }
 
+// AvailableModes returns a list of available cgroup modes.
 func AvailableModes() []Mode {
 	return []Mode{}
 }

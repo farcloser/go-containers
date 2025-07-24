@@ -18,6 +18,7 @@ package sysinfo
 
 import "go.farcloser.world/containers/security/cgroups"
 
+// SysInfo contains information about the system.
 type SysInfo struct {
 	cgroups.Info
 
